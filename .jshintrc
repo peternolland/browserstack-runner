@@ -17,5 +17,6 @@
       "require",
       "global",
       "window"
-  ]
+  ],
+  "esversion": 6
 }
