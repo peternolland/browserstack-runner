@@ -259,18 +259,20 @@ function attachWorkerHelpers(worker) {
     this.isAckd = false;
   };
 
-  client.getWorker(this.id, function (err, res) {
-    if (!err) {
-       // TODO: if updated to using v5 api this could be changed to using the sessionID key instead.
-      var browserURLParts = res.browser_url.split('/');
-      var sessionID = browserURLParts[browserURLParts.length -1];
-      client.request({
-        path: "/automate/sessions/" + sessionID + '.json',
-        method: "PUT"
-      },
-      JSON.stringify({status: status, reason: reason}));
-    }
-  });
+  worker.setTestStatus = function setTestStatus(status, reason) {
+    client.getWorker(this.id, function (err, res) {
+      if (!err) {
+         // TODO: if updated to using v5 api this could be changed to using the sessionID key instead.
+        var browserURLParts = res.browser_url.split('/');
+        var sessionID = browserURLParts[browserURLParts.length -1];
+        client.request({
+          path: "/automate/sessions/" + sessionID + '.json',
+          method: "PUT"
+        },
+        JSON.stringify({status: status, reason: reason}));
+      }
+    });
+  };
 
   return worker;
 }
